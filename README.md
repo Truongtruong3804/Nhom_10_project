@@ -11,7 +11,7 @@ Web trao đổi – cho tặng đồ cũ miễn phí
 
 ### 1. Clone dự án về máy
 ```sh
-git clone <link-repo-của-bạn>
+git clone (https://github.com/Truongtruong3804/Nhom_10_project.git)
 cd Nhom_10_project
 ```
 
@@ -42,7 +42,7 @@ Mở 2 terminal:
 
 ## Lưu ý
 - Nếu gặp lỗi về phiên bản Node, hãy nâng cấp Node.js lên bản mới hơn (>= 20.19.0).
-- Backend mặc định chạy ở http://localhost:3000 (có thể thay đổi trong file backend/server.js).
+- Backend mặc định chạy ở http://localhost:4000 (có thể thay đổi trong file backend/server.js).
 - Frontend sẽ tự động gọi API tới backend qua các endpoint.
 
 ---
