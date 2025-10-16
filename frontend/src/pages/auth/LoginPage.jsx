@@ -16,7 +16,7 @@ export default function LoginPage() {
     try {
       await login(email, password)
       navigate('/')
-    } catch (err) {
+    } catch {
       setError('Đăng nhập thất bại')
     } finally {
       setLoading(false)
@@ -27,12 +27,17 @@ export default function LoginPage() {
     <div className="page narrow">
       <h2>Đăng nhập</h2>
       <form className="form" onSubmit={submit}>
-        <label>Email</label>
-        <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+        <label>Email hoặc tên</label>
+        <input type="text" value={email} onChange={(e) => setEmail(e.target.value)} required placeholder="Nhập email hoặc tên bất kỳ" />
         <label>Mật khẩu</label>
         <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
         {error && <div className="error">{error}</div>}
-        <button className="btn" disabled={loading}>{loading ? 'Đang xử lý...' : 'Đăng nhập'}</button>
+        <div className="actions" style={{justifyContent:'space-between'}}>
+          <button className="btn" disabled={loading}>{loading ? 'Đang xử lý...' : 'Đăng nhập'}</button>
+          <button type="button" className="btn-light" onClick={() => { setEmail('demo@sv.edu'); setPassword('123456'); }}>
+            Điền nhanh (demo)
+          </button>
+        </div>
       </form>
       <p>Chưa có tài khoản? <a onClick={() => navigate('/register')}>Đăng ký</a></p>
     </div>

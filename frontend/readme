@@ -1,0 +1,59 @@
+Hiểu ý bạn: giữ frontend ổn định để sau cắm backend/DB mà gần như không phải sửa UI. Dưới đây là blueprint kết nối chuẩn để backend làm theo, và bạn chỉ cần gạt công tắc ở services.
+
+Frontend Hợp Đồng (Giữ Nguyên)
+
+Services giữ API như hiện tại:
+listProducts(params), getProductById(id), createProduct(payload) in Nhom_10_project/frontend/src/services/products.js:1
+listChats(), getChatById(id), sendMessage(chatId, text) in Nhom_10_project/frontend/src/services/chats.js:1
+Sau này thêm auth riêng: login(email, password), register(name, email, password)
+Endpoint chuẩn (backend theo đúng, frontend không đổi):
+GET /api/products?search=&category=&condition=&minPrice=&maxPrice=&sort=&cursor=&limit=
+GET /api/products/:id
+POST /api/products body: { title, price, category, condition, description, images[] }
+GET /api/chats, GET /api/chats/:id
+POST /api/chats/:id/messages body: { text }
+POST /api/auth/login, POST /api/auth/register → { user, token }
+Response format nên thống nhất:
+Success (list): { items: [...], nextCursor: "..." } hoặc chỉ [...] nếu ít
+Success (single): { ...entity }
+Error: { message: "string", code: "ERR_CODE" } (HTTP status phù hợp)
+Chuyển Mock → Backend (Không Đụng UI)
+
+Bật gọi API thật: Nhom_10_project/frontend/src/services/apiClient.js:1 → USE_MOCKS = false.
+Dev dùng proxy (khuyên dùng):
+Để trống VITE_API_URL (không cần .env)
+Vite đã proxy /api → http://localhost:4000 (file frontend/vite.config.js:1)
+Prod dùng base URL:
+Tạo frontend/.env với VITE_API_URL=https://backend-host
+Giữ nguyên đường dẫn /api/... trong services.
+Database/Backend Gợi Ý (không ảnh hưởng frontend nếu theo hợp đồng)
+
+Chọn DB: MongoDB + Mongoose hoặc PostgreSQL + Prisma (đều OK)
+Schema gợi ý:
+User: id (UUID), name, email(unique), passwordHash, rating, createdAt
+Product: id, title, price, category, condition, description, images[], sellerId(ref User), status(available/sold), location, createdAt
+Chat: id, participants[UserId], lastMessage, updatedAt
+Message: id, chatId, senderId, text, createdAt
+Index: text index cho title, index price, category, createdAt; Chat index updatedAt
+Ảnh: nên dùng pre-signed URL (S3/Cloudinary). Quy trình:
+Frontend gọi /api/uploads/presign → nhận URL
+Upload ảnh trực tiếp → backend chỉ lưu URL trong images[] (UI giữ nguyên)
+Pagination/Filter/Sort (ổn định UI)
+
+Query params như trên; sort ví dụ: sort=createdAt:desc hoặc sort=price:asc
+Cursor-based pagination (cursor, nextCursor) để ổn định; frontend chỉ chuyển cursor từ response vào request tiếp theo
+Auth/Token
+
+POST /api/auth/login → { user, token }
+Frontend lưu vào localStorage (đã sẵn trong AuthContext.jsx:1), apiClient sẽ tự gắn Authorization: Bearer <token> nếu có
+Bảo vệ route: backend kiểm token; frontend có thể ẩn nút/redirect (không bắt buộc đổi UI)
+Khi Backend Sẵn Sàng (Checklist 1 phút)
+
+Test nhanh endpoint:
+GET http://localhost:4000/api/products
+POST http://localhost:4000/api/products với JSON mẫu
+Frontend:
+Mở src/services/apiClient.js:1 → đặt USE_MOCKS = false
+Dev: không cần .env; Prod: thêm VITE_API_URL
+npm run dev và kiểm tra Trang chủ/Chi tiết/Đăng bài/Chat
+Bạn muốn mình viết file “contracts” ngắn trong repo mô tả chi tiết request/response (để giao cho team backend) không? Nếu OK, mình sẽ thêm một API_CONTRACT.md mô tả từng endpoint với ví dụ dữ liệu, đảm bảo backend làm xong là bạn chỉ cần gạt USE_MOCKS=false là chạy.
