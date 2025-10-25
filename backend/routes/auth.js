@@ -1,8 +1,8 @@
 import { Router } from 'express';
 import { body } from 'express-validator';
-import { query } from '../db.js';
-import { hash, verify } from '../utils/hash.js';
-import { signAccess } from '../utils/jwt.js';
+import { query } from '../src/db.js';
+import { hash, verify } from '../src/utils/hash.js';
+import { signAccess } from '../src/utils/jwt.js';
 import crypto from 'crypto';
 
 const r = Router();

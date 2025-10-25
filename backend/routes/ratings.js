@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { auth } from '../middleware/auth.js';
-import { query } from '../db.js';
+import { query } from '../src/db.js';
 const r = Router();
 
 // tạo/sửa 1 lần mỗi cặp

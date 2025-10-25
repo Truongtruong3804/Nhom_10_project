@@ -1,16 +1,27 @@
+import dotenv from 'dotenv';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+dotenv.config({ path: path.join(__dirname, '../.env'), override: true });
+
+console.log('[ENV]', process.env.SQL_SERVER, process.env.SQL_USER); 
+
 import express from 'express';
 import cors from 'cors';
-import 'dotenv/config';
+import auth from '../routes/auth.js';
+import posts from '../routes/posts.js';
+import comments from '../routes/comments.js';
+import favorites from '../routes/favorites.js';
+import messages from '../routes/messages.js';
+import notifications from '../routes/notifications.js';
+import ratings from '../routes/ratings.js';
+import reports from '../routes/reports.js';
+import search from '../routes/search.js';
 
-import auth from './routes/auth.js';
-import posts from './routes/posts.js';
-import comments from './routes/comments.js';
-import favorites from './routes/favorites.js';
-import ratings from './routes/ratings.js';
-import reports from './routes/reports.js';
-import messages from './routes/messages.js';
-import notifications from './routes/notifications.js';
-import search from './routes/search.js';
+
 
 const app = express();
 app.use(cors());
