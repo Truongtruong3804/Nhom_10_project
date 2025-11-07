@@ -3,6 +3,8 @@ import { listProducts } from '../services/products'
 import { isFavorite, toggleFavorite } from '../services/favorites'
 import { navigate } from '../router'
 
+const PAGE_SIZE = 8
+
 function ProductCard({ item, onFav }) {
   return (
     <div className="card product">
@@ -29,6 +31,7 @@ export default function HomePage() {
   const [loading, setLoading] = useState(true)
   const [sort, setSort] = useState('relevant')
   const [freeOnly, setFreeOnly] = useState(false)
+  const [page, setPage] = useState(1)
 
   useEffect(() => {
     const applySearchFromStorage = () => {
@@ -54,6 +57,10 @@ export default function HomePage() {
     return () => { mounted = false; window.removeEventListener('svm_search_change', handler) }
   }, [])
 
+  useEffect(() => {
+    setPage(1)
+  }, [q, category, sort, freeOnly])
+
   const filtered = items.filter((it) =>
     it.title.toLowerCase().includes(q.toLowerCase()) && (!category || it.category === category) && (!freeOnly || it.price === 0)
   )
@@ -64,10 +71,32 @@ export default function HomePage() {
     return 0
   })
 
+  const totalPages = Math.max(1, Math.ceil(sorted.length / PAGE_SIZE))
+
+  useEffect(() => {
+    setPage((prev) => Math.min(prev, totalPages))
+  }, [totalPages])
+
+  const currentPage = Math.min(page, totalPages)
+  const start = (currentPage - 1) * PAGE_SIZE
+  const paged = sorted.slice(start, start + PAGE_SIZE)
+
   const onFav = (id) => {
     toggleFavorite(id)
     setItems((prev) => [...prev])
   }
+
+  const changePage = (next) => {
+    setPage(next)
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
+
+  const visiblePages = (() => {
+    if (totalPages <= 5) return Array.from({ length: totalPages }, (_, i) => i + 1)
+    if (currentPage <= 3) return [1, 2, 3, 4, 5]
+    if (currentPage >= totalPages - 2) return Array.from({ length: 5 }, (_, i) => totalPages - 4 + i)
+    return [currentPage - 2, currentPage - 1, currentPage, currentPage + 1, currentPage + 2]
+  })()
 
   return (
     <div className="page">
@@ -130,13 +159,55 @@ export default function HomePage() {
       ) : filtered.length === 0 ? (
         <div className="empty">Không có kết quả.</div>
       ) : (
-        <div className="grid">
-          {sorted.map((it) => (
-            <ProductCard key={it.id} item={it} onFav={onFav} />
-          ))}
-        </div>
+        <>
+          <div className="grid">
+            {paged.map((it) => (
+              <ProductCard key={it.id} item={it} onFav={onFav} />
+            ))}
+          </div>
+          {sorted.length > PAGE_SIZE && (
+            <div className="pagination" role="navigation" aria-label="Phân trang sản phẩm">
+              <button
+                className="page-btn"
+                onClick={() => changePage(currentPage - 1)}
+                disabled={currentPage === 1}
+              >
+                ← Trước
+              </button>
+              <div className="pagination-pages">
+                {visiblePages[0] > 1 && (
+                  <>
+                    <button className="page-btn" onClick={() => changePage(1)}>1</button>
+                    {visiblePages[0] > 2 && <span className="pagination-ellipsis">…</span>}
+                  </>
+                )}
+                {visiblePages.map((num) => (
+                  <button
+                    key={num}
+                    className={`page-btn ${num === currentPage ? 'active' : ''}`}
+                    onClick={() => changePage(num)}
+                  >
+                    {num}
+                  </button>
+                ))}
+                {visiblePages[visiblePages.length - 1] < totalPages && (
+                  <>
+                    {visiblePages[visiblePages.length - 1] < totalPages - 1 && <span className="pagination-ellipsis">…</span>}
+                    <button className="page-btn" onClick={() => changePage(totalPages)}>{totalPages}</button>
+                  </>
+                )}
+              </div>
+              <button
+                className="page-btn"
+                onClick={() => changePage(currentPage + 1)}
+                disabled={currentPage === totalPages}
+              >
+                Sau →
+              </button>
+            </div>
+          )}
+        </>
       )}
     </div>
   )
 }
-
