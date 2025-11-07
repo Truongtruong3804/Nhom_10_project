@@ -14,6 +14,7 @@ import ChatsPage from './pages/chat/ChatsPage'
 import ChatRoomPage from './pages/chat/ChatRoomPage'
 import ProfilePage from './pages/ProfilePage'
 import AdminDashboardPage from './pages/admin/AdminDashboardPage'
+import SupportBot from './components/SupportBot'
 
 const routes = {
   '/': HomePage,
@@ -352,6 +353,7 @@ function Layout({ children }) {
         </div>
       </footer>
       <InfoModal data={infoModal} onClose={closeModal} />
+      <SupportBot />
     </div>
   )
 }
