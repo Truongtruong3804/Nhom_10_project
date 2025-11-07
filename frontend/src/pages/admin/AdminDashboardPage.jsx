@@ -73,7 +73,7 @@ export default function AdminDashboardPage() {
       <header className="admin-header">
         <div>
           <h2>Admin Dashboard</h2>
-          <p>Theo dõi và xử lý nhanh các hoạt động trên SV Market.</p>
+          <p>Theo dõi và xử lý nhanh các hoạt động trên MABU.</p>
         </div>
         <div className="admin-tabs">
           {tabs.map((tab) => (

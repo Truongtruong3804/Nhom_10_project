@@ -323,7 +323,9 @@ function Layout({ children }) {
     <div className="layout">
       <FestiveDecor />
       <NavBar />
-      <main className="container">{children}</main>
+      <main>
+        <div className="container">{children}</div>
+      </main>
       <footer className="footer">
         <div className="footer-inner container">
           <div className="footer-grid">
@@ -346,7 +348,7 @@ function Layout({ children }) {
               </div>
             </div>
           </div>
-          <div className="footer-copy">© {new Date().getFullYear()} SV Market</div>
+          <div className="footer-copy">© {new Date().getFullYear()} MABU</div>
         </div>
       </footer>
       <InfoModal data={infoModal} onClose={closeModal} />

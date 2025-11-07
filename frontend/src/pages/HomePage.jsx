@@ -100,6 +100,37 @@ export default function HomePage() {
 
   return (
     <div className="page">
+      <section className="home-hero">
+        <div className="hero-text">
+          <span className="hero-pill">Sàn trao đổi đồ cũ · Sinh viên</span>
+          <h1>Đồ cũ vẫn chất, trao đổi cực nhanh</h1>
+          <p>
+            MABU là nơi bạn có thể mua bán lại sách, đồ điện tử, nội thất và hàng trăm món đồ cũ khác. Tái sử dụng để tiết kiệm và cùng nhau sống xanh hơn.
+          </p>
+          <div className="hero-actions">
+            <button type="button" className="btn" onClick={() => navigate('/posts/new')}>
+              Đăng đồ cần nhượng
+            </button>
+            <button type="button" className="btn-light" onClick={() => navigate('/favorites')}>
+              Xem đồ đang hot
+            </button>
+          </div>
+        </div>
+        <div className="hero-visual">
+          <div className="hero-card marketing">
+            <span className="hero-label">Giảm 50%</span>
+            <h3>Tuần lễ tái sử dụng</h3>
+            <p>Đăng bán đồ cũ của bạn ngay hôm nay để nhận ưu đãi phí dịch vụ.</p>
+          </div>
+          <div className="hero-card second marketing">
+            <span className="hero-label">Hot trend</span>
+            <h3>Đồ cũ, ý tưởng mới</h3>
+            <p>Lên đồ độc lạ từ các món second-hand chất lượng được chọn lọc.</p>
+          </div>
+          <div className="hero-badge">MABU Campaign</div>
+        </div>
+      </section>
+
       <div className="home-cats">
         {[
           { label: 'Điện thoại – Laptop – Tablet', value: 'Điện tử' },
