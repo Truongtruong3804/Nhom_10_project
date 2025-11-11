@@ -9,12 +9,12 @@ Web trao đổi – cho tặng đồ cũ miễn phí
 - npm (đi kèm Node.js)
 
 ## Các bước cài đặt
-chạy database của MINH gửi ở nhóm ZALO, với user của SQL Server như sau:
+Chạy database của MINH gửi ở nhóm ZALO, với user của SQL Server như sau:
 
-SQL_SERVER=localhost\SQLEXPRESS
-SQL_DB=QLTraoDoiDoDung
-SQL_USER=new_user1
-SQL_PWD=123456789
+- SQL_SERVER=localhost\SQLEXPRESS
+- SQL_DB=QLTraoDoiDoDung
+- SQL_USER=new_user1
+- SQL_PWD=123456789
 
 ### 1. Clone dự án về máy
 ```sh
@@ -30,16 +30,16 @@ cd ../frontend
 npm install
 ```
 
-ở Folder Backend, tạo file có tên .env (ghi đúng như vậy .env) rồi đưa sữ liệu này vào file:
+Ở Folder Backend, tạo file có tên .env (ghi đúng như vậy .env) rồi đưa sữ liệu này vào file:
 
-PORT=3000
-SQL_SERVER=localhost\SQLEXPRESS
-SQL_DB=QLTraoDoiDoDung
-SQL_USER=new_user1
-SQL_PWD=123456789
-JWT_SECRET=change-this-256-bit-secret
-JWT_EXPIRES=15m
-REFRESH_EXPIRES_DAYS=30
+- PORT=3000
+- SQL_SERVER=localhost\SQLEXPRESS
+- SQL_DB=QLTraoDoiDoDung
+- SQL_USER=new_user1
+- SQL_PWD=123456789
+- JWT_SECRET=change-this-256-bit-secret
+- JWT_EXPIRES=15m
+- REFRESH_EXPIRES_DAYS=30
 
 
 ### 3. Chạy dự án
