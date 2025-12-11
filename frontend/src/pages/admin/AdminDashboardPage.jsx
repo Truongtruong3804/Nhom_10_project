@@ -381,11 +381,7 @@ export default function AdminDashboardPage() {
               </div>
             ))}
           </div>
-          <div className="admin-note">
-            Nếu sau này anh có API thống kê chi tiết hơn, chỉ cần chỉnh lại
-            hàm <code>adminGetStats</code> và phần tính <code>stats</code> là
-            xong.
-          </div>
+          
         </section>
       )}
     </div>
